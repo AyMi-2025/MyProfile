@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ayan Maiti — Developer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EEF1F6;
+    --paper-alt: #E3E8F1;
+    --chrome: #D6DCE7;
+    --chrome-line: #C3CBDA;
+    --ink: #14171F;
+    --ink-soft: #545B6E;
+    --violet: #6C5CE7;
+    --violet-dark: #5340D6;
+    --teal: #00B39B;
+    --coral: #FF6B6B;
+    --amber: #FFC857;
+    --panel-bg: #1B1E29;
+    --grid-line: rgba(20,23,31,0.035);
+    --card-shadow: rgba(20,23,31,0.14);
+    --chrome-h: 104px;
+    --radius: 14px;
+    --mono-display: 'Space Mono', monospace;
+    --mono-util: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  html[data-theme="dark"]{
+    --paper: #14161F;
+    --paper-alt: #1B1E29;
+    --chrome: #20232E;
+    --chrome-line: #333748;
+    --ink: #ECEEF5;
+    --ink-soft: #A6ACC0;
+    --violet: #8C7BFF;
+    --violet-dark: #A79BFF;
+    --teal: #2DD9BE;
+    --coral: #FF8585;
+    --amber: #FFD37A;
+    --panel-bg: #232735;
+    --grid-line: rgba(255,255,255,0.05);
+    --card-shadow: rgba(0,0,0,0.45);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--paper) 1px, transparent 1px) 0 0 / 100% 40px,
+      linear-gradient(90deg, var(--paper) 1px, transparent 1px) 0 0 / 40px 100%,
+      var(--paper);
+    background-color: var(--paper);
+    background-image:
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    color: var(--ink);
+    font-family: var(--sans);
+    padding-top: var(--chrome-h);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color .3s ease, color .3s ease;
+  }
+  section{ scroll-margin-top: var(--chrome-h); }
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--violet); color: white; }
+  :focus-visible{ outline: 3px solid var(--violet); outline-offset: 2px; }
+
+  /* ---------- Browser chrome ---------- */
+  .browser-chrome{
+    position: fixed; top:0; left:0; right:0; z-index: 100;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--chrome-line);
+  }
+  .tab-strip{
+    display:flex; align-items:center; gap: 18px;
+    padding: 10px 16px 6px;
+    overflow-x:auto; scrollbar-width:none;
+  }
+  .tab-strip::-webkit-scrollbar{ display:none; }
+  .traffic-lights{ display:flex; gap:7px; flex-shrink:0; }
+  .dot{ width:11px; height:11px; border-radius:50%; display:inline-block; }
+  .dot.red{ background: var(--coral); }
+  .dot.amber{ background: var(--amber); }
+  .dot.teal{ background: var(--teal); }
+  .tabs{ display:flex; gap:4px; }
+  .tab{
+    font-family: var(--mono-util);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    background: var(--paper-alt);
+    padding: 8px 16px 7px;
+    border-radius: 8px 8px 0 0;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: color .15s ease, background .15s ease;
+  }
+  .tab:hover{ color: var(--ink); }
+  .tab.active{
+    background: var(--paper);
+    color: var(--ink);
+    font-weight: 600;
+    border-color: var(--chrome-line);
+  }
+  .address-row{
+    padding: 0 16px 12px;
+    display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .address-bar{
+    max-width: 480px;
+    background: var(--paper);
+    border: 1px solid var(--chrome-line);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-family: var(--mono-util);
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    display:flex; align-items:center; gap:8px;
+    justify-content:center;
+    transition: background-color .3s ease;
+  }
+  .url-base{ color: var(--ink); font-weight:600; }
+  .url-path{ color: var(--violet); }
+
+  .theme-toggle{
+    flex-shrink:0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--chrome-line);
+    background: var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .15s ease, background-color .3s ease;
+  }
+  .theme-toggle:hover{ transform: scale(1.1) rotate(-8deg); }
+
+  /* ---------- Shared layout ---------- */
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  .prompt-eyebrow{
+    font-family: var(--mono-util);
+    font-size: 13px;
+    color: var(--teal);
+    background: rgba(0,179,155,0.1);
+    display:inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    margin-bottom: 18px;
+  }
+  .prompt-eyebrow .prompt-user{ color: var(--violet); }
+  h2.section-title{
+    font-family: var(--mono-display);
+    font-size: clamp(24px, 3.4vw, 34px);
+    margin: 0 0 28px;
+    letter-spacing: -0.5px;
+  }
+  .reveal{ opacity:0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in-view{ opacity:1; transform: translateY(0); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height: calc(100vh - var(--chrome-h));
+    display:flex; flex-direction:column; justify-content:center;
+    padding: 60px 0 80px;
+  }
+  .hero-grid{ display:grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items:center; }
+  .hero h1{
+    font-family: var(--mono-display);
+    font-size: clamp(40px, 6.4vw, 68px);
+    line-height: 1.02;
+    margin: 0 0 20px;
+    letter-spacing: -1px;
+  }
+  .hero h1 .dot-blink{ color: var(--violet); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+  .typed-line{
+    font-family: var(--mono-util);
+    font-size: clamp(16px, 2.1vw, 20px);
+    color: var(--ink-soft);
+    min-height: 28px;
+    margin-bottom: 32px;
+  }
+  .typed-line .cursor{ color: var(--violet); }
+  .hero-actions{ display:flex; flex-wrap:wrap; gap: 12px; }
+  .btn{
+    font-family: var(--mono-util);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 22px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    display:inline-flex; align-items:center; gap:8px;
+    transition: transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn-primary{ background: var(--ink); color: var(--paper); }
+  .btn-primary:hover{ background: var(--violet); border-color: var(--violet); transform: translateY(-2px); }
+  .btn-ghost:hover{ background: var(--ink); color: var(--paper); transform: translateY(-2px); }
+
+  .code-card{
+    background: var(--panel-bg);
+    color: #E7E9F2;
+    border-radius: var(--radius);
+    padding: 20px 22px 24px;
+    font-family: var(--mono-util);
+    font-size: 13.5px;
+    line-height: 1.75;
+    box-shadow: 8px 8px 0 var(--chrome-line);
+    transform: rotate(1.2deg);
+    transition: background-color .3s ease;
+  }
+  .code-card .cc-titlebar{ display:flex; gap:6px; margin-bottom: 14px; }
+  .code-card .cc-dot{ width:9px; height:9px; border-radius:50%; }
+  .cmt{ color: #7C8299; }
+  .kw{ color: var(--coral); }
+  .str{ color: var(--amber); }
+  .prop{ color: #7FD8FF; }
+  .fn{ color: var(--teal); }
+
+  /* ---------- About ---------- */
+  .about{ padding: 90px 0; background: var(--paper-alt); }
+  .about-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items:start; }
+  .about p{ font-size: 17px; line-height: 1.75; color: var(--ink-soft); margin: 0 0 18px; }
+  .about p strong{ color: var(--ink); }
+  .fact-list{ list-style:none; margin: 24px 0 0; padding:0; display:grid; gap: 10px; }
+  .fact-list li{ font-family: var(--mono-util); font-size: 13.5px; }
+  .fact-list li span{ color: var(--violet); margin-right:8px; }
+
+  /* ---------- Projects ---------- */
+  .projects{ padding: 90px 0; }
+  .project-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  .project-card{
+    background: var(--paper);
+    border: 1px solid var(--chrome-line);
+    border-radius: var(--radius);
+    overflow:hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+  }
+  .project-card:hover{ box-shadow: 0 18px 34px var(--card-shadow); }
+  .pc-bar{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px 14px;
+    background: var(--chrome);
+    border-bottom: 1px solid var(--chrome-line);
+  }
+  .pc-bar .traffic-lights .dot{ width:8px; height:8px; }
+  .pc-filename{ font-family: var(--mono-util); font-size: 12px; color: var(--ink-soft); }
+  .pc-body{ padding: 22px 20px 24px; }
+  .pc-body h3{ font-family: var(--mono-display); font-size: 19px; margin: 0 0 10px; }
+  .pc-body p{ font-size: 14.5px; color: var(--ink-soft); line-height: 1.6; margin: 0 0 16px; }
+  .pc-tags{ display:flex; flex-wrap:wrap; gap:7px; margin-bottom: 18px; }
+  .pc-tag{
+    font-family: var(--mono-util); font-size: 11px; padding: 4px 10px;
+    border-radius: 999px; color: white;
+  }
+  .pc-links{ display:flex; gap: 16px; }
+  .pc-links a{ font-family: var(--mono-util); font-size: 13px; font-weight:600; color: var(--violet-dark); }
+  .pc-links a:hover{ text-decoration: underline; }
+
+  /* ---------- Skills ---------- */
+  .skills{ padding: 90px 0; background: var(--paper-alt); }
+  .sticker-board{ display:flex; flex-wrap:wrap; gap: 16px; }
+  .sticker{
+    font-family: var(--mono-display);
+    font-size: 14.5px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    transition: transform .2s ease;
+    cursor: default;
+  }
+  .sticker:hover{ transform: rotate(0deg) scale(1.06) !important; }
+
+  /* ---------- Contact ---------- */
+  .contact{ padding: 100px 0 60px; }
+  .contact-panel{
+    background: var(--panel-bg); color: #E7E9F2;
+    border-radius: var(--radius);
+    padding: 34px 30px;
+    font-family: var(--mono-util);
+    font-size: 14.5px;
+    line-height: 2;
+    transition: background-color .3s ease;
+  }
+  .contact-panel a{ color: #7FD8FF; }
+  .contact-panel a:hover{ text-decoration: underline; }
+  .contact-big{
+    font-family: var(--mono-display);
+    font-size: clamp(24px, 4vw, 34px);
+    color: white;
+    margin-bottom: 14px;
+    display:block;
+  }
+  .contact-big:hover{ color: var(--amber); }
+
+  footer{
+    text-align:center; padding: 34px 24px 44px;
+    font-family: var(--mono-util); font-size: 12.5px; color: var(--ink-soft);
+  }
+
+  /* ---------- Terminal easter egg ---------- */
+  .terminal-fab{
+    position: fixed; bottom: 26px; right: 26px; z-index: 200;
+    width: 54px; height: 54px; border-radius: 50%;
+    background: var(--ink); color: var(--teal);
+    font-family: var(--mono-util); font-size: 15px; font-weight:700;
+    border: none; cursor: pointer;
+    box-shadow: 0 8px 20px rgba(20,23,31,0.3);
+    transition: transform .15s ease;
+  }
+  .terminal-fab:hover{ transform: scale(1.08); }
+  .terminal-overlay{
+    position: fixed; inset:0; z-index: 300;
+    background: rgba(20,23,31,0.55);
+    display:flex; align-items:center; justify-content:center;
+    padding: 20px;
+  }
+  .terminal-overlay.hidden{ display:none; }
+  .terminal-window{
+    width: 100%; max-width: 560px; max-height: 72vh;
+    background: #14161F; color: #E7E9F2;
+    border-radius: 12px; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+  }
+  .terminal-titlebar{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px 14px; background: #1E212E;
+    font-family: var(--mono-util); font-size: 12.5px; color: #9AA0B4;
+  }
+  .terminal-title{ flex:1; text-align:center; }
+  .terminal-close{
+    background:none; border:none; color:#9AA0B4; font-size:18px; cursor:pointer; line-height:1;
+  }
+  .terminal-close:hover{ color: var(--coral); }
+  .terminal-body{
+    flex:1; overflow-y:auto; padding: 16px 18px;
+    font-family: var(--mono-util); font-size: 13.5px; line-height: 1.8;
+  }
+  .terminal-line{ white-space: pre-wrap; word-break: break-word; }
+  .terminal-line .hl{ color: var(--teal); }
+  .terminal-input-row{
+    display:flex; align-items:center; gap:8px;
+    padding: 12px 16px 16px; border-top: 1px solid #262A3A;
+    font-family: var(--mono-util); font-size: 13.5px;
+  }
+  .prompt{ color: var(--violet); flex-shrink:0; }
+  .terminal-input{
+    flex:1; background:none; border:none; color:#E7E9F2;
+    font-family: var(--mono-util); font-size: 13.5px; outline:none;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 860px){
+    .hero-grid, .about-grid, .project-grid{ grid-template-columns: 1fr; }
+    .code-card{ transform: none; }
+    .project-grid{ gap: 20px; }
+  }
+  @media (max-width: 560px){
+    :root{ --chrome-h: 112px; }
+    .address-bar{ font-size: 11px; }
+    .tab{ font-size: 11.5px; padding: 7px 12px 6px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .reveal{ opacity:1; transform:none; transition:none; }
+    .dot-blink{ animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="browser-chrome">
+  <div class="tab-strip">
+    <div class="traffic-lights">
+      <span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span>
+    </div>
+    <nav class="tabs">
+      <a href="#home" class="tab active" data-path="/">Home</a>
+      <a href="#about" class="tab" data-path="/about">About</a>
+      <a href="#projects" class="tab" data-path="/projects">Projects</a>
+      <a href="#skills" class="tab" data-path="/skills">Skills</a>
+      <a href="#contact" class="tab" data-path="/contact">Contact</a>
+    </nav>
+  </div>
+  <div class="address-row">
+    <div class="address-bar">
+      <span>🔒</span><span class="url-base">ayan_maiti.dev</span><span class="url-path" id="url-path">/</span>
+    </div>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark mode">🌙</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HOME / HERO -->
+  <section id="home" class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="prompt-eyebrow"><span class="prompt-user">ayan_maiti</span>:~$ who_am_i</span>
+        <h1>Ayan Maiti<span class="dot-blink">_</span></h1>
+        <div class="typed-line" id="typed-line"><span id="typed-text"></span><span class="cursor">|</span></div>
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">View projects →</a>
+          <a href="mailto:hello@yourname.dev" class="btn btn-ghost">Say hi</a>
+        </div>
+      </div>
+      <div class="code-card">
+        <div class="cc-titlebar">
+          <span class="cc-dot" style="background:var(--coral)"></span>
+          <span class="cc-dot" style="background:var(--amber)"></span>
+          <span class="cc-dot" style="background:var(--teal)"></span>
+        </div>
+        <div><span class="cmt">// about-me.js</span></div>
+        <div><span class="kw">export const</span> <span class="prop">bio</span> = {</div>
+        <div>&nbsp;&nbsp;based_in: <span class="str">"India"</span>,</div>
+        <div>&nbsp;&nbsp;currently: <span class="str">"learning something new"</span>,</div>
+        <div>&nbsp;&nbsp;loves: [<span class="str">"building websites"</span>, <span class="str">"solve real life problem"</span>],</div>
+        <div>&nbsp;&nbsp;learning: <span class="str">"Web Developement"</span>,</div>
+        <div>};</div>
+        <div><span class="fn">bio</span>.ship();</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <div class="wrap reveal">
+      <span class="prompt-eyebrow"><span class="prompt-user">ayan_maiti</span>:~$ cd about</span>
+      <div class="about-grid">
+        <div>
+          <p><strong>Hey, I'm Ayan Maiti</strong> — First Year BTech CSE student at Lovely Professional University and Currently building my technical foundation through Sheryians Cohort 3.0, with a focus on frontend development alongside Python fundamentals.Open to internship opportunities and conversations with fellow developers. If you're a fellow learner, developer, or recruiter — let's connect and build !! </p>
+        </div>
+        <ul class="fact-list">
+          <li><span>&gt;</span> learning: HTML / CSS / JS / React / Java / Python / Git / GitHub</li>
+          <li><span>&gt;</span> based in: India</li>
+          <li><span>&gt;</span> open to: Freelance</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="projects">
+    <div class="wrap">
+      <span class="prompt-eyebrow"><span class="prompt-user">ayan_maiti</span>:~$ ls projects/</span>
+      <h2 class="section-title">Things I've built</h2>
+      <div class="project-grid">
+
+        <div class="project-card reveal">
+          <div class="pc-bar">
+            <div class="traffic-lights"><span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span></div>
+            <span class="pc-filename">siftnow.vercel.app</span>
+          </div>
+          <div class="pc-body">
+            <h3>SIFT - Stop Searching. Start Learning.</h3>
+            <p>SIFT helps students overcome Resource FOMO by recommending curated learning resources based on their goals, experience, and learning preferences. Stop Searching. Start Learning</p>
+            <div class="pc-tags">
+              <span class="pc-tag" style="background:var(--violet)">HTML</span>
+              <span class="pc-tag" style="background:var(--teal)">CSS</span>
+              <span class="pc-tag" style="background:var(--amber)">JS</span>
+              <span class="pc-tag" style="background:var(--coral)">Firebase</span>
+            </div>
+            <div class="pc-links"><a href="https://siftnow.vercel.app/" target="_blank">Open ↗</a><a href="https://github.com/AyMi-2025/NYC_Contest" target="_blank">GitHub</a></div>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="pc-bar">
+            <div class="traffic-lights"><span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span></div>
+            <span class="pc-filename">recipe-remix.app</span>
+          </div>
+          <div class="pc-body">
+            <h3>Recipe Remix</h3>
+            <p>Paste any recipe and get three chaotic variations, generated and ranked by how likely they are to work.</p>
+            <div class="pc-tags">
+              <span class="pc-tag" style="background:var(--coral)">React</span>
+              <span class="pc-tag" style="background:var(--amber)">Express</span>
+            </div>
+            <div class="pc-links"><a href="#">Open ↗</a><a href="#">Source</a></div>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="pc-bar">
+            <div class="traffic-lights"><span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span></div>
+            <span class="pc-filename">latency-dash.app</span>
+          </div>
+          <div class="pc-body">
+            <h3>Latency Dashboard</h3>
+            <p>Real-time dashboard for monitoring API latency across services, with alerts that actually feel useful.</p>
+            <div class="pc-tags">
+              <span class="pc-tag" style="background:var(--teal)">Go</span>
+              <span class="pc-tag" style="background:var(--violet)">WebSockets</span>
+            </div>
+            <div class="pc-links"><a href="#">Open ↗</a><a href="#">Source</a></div>
+          </div>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="pc-bar">
+            <div class="traffic-lights"><span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span></div>
+            <span class="pc-filename">notes.app</span>
+          </div>
+          <div class="pc-body">
+            <h3>Markdown Notes App</h3>
+            <p>A distraction-free notes app with live markdown preview, local-first storage, and vim keybindings.</p>
+            <div class="pc-tags">
+              <span class="pc-tag" style="background:var(--amber)">TypeScript</span>
+              <span class="pc-tag" style="background:var(--coral)">IndexedDB</span>
+            </div>
+            <div class="pc-links"><a href="#">Open ↗</a><a href="#">Source</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="skills">
+    <div class="wrap reveal">
+      <span class="prompt-eyebrow"><span class="prompt-user">guest@yourname</span>:~$ cat skills.txt</span>
+      <h2 class="section-title">Tools I reach for</h2>
+      <div class="sticker-board" id="sticker-board">
+        <span class="sticker" style="border-color:var(--violet); transform: rotate(-3deg);">HTML</span>
+        <span class="sticker" style="border-color:var(--teal); transform: rotate(2deg);">CSS</span>
+        <span class="sticker" style="border-color:var(--coral); transform: rotate(-1deg);">JavaScript</span>
+        <span class="sticker" style="border-color:var(--amber); transform: rotate(3deg);">React</span>
+        <span class="sticker" style="border-color:var(--violet); transform: rotate(1deg);">Python</span>
+        <span class="sticker" style="border-color:var(--teal); transform: rotate(-2deg);">Java </span>
+        <span class="sticker" style="border-color:var(--coral); transform: rotate(2deg);">Docker</span>
+        <span class="sticker" style="border-color:var(--amber); transform: rotate(-3deg);">AWS</span>
+        <span class="sticker" style="border-color:var(--violet); transform: rotate(2deg);">GraphQL</span>
+        <span class="sticker" style="border-color:var(--teal); transform: rotate(-1deg);">Tailwind</span>
+        <span class="sticker" style="border-color:var(--coral); transform: rotate(1deg);">Git</span>
+        <span class="sticker" style="border-color:var(--amber); transform: rotate(-2deg);">Figma</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <div class="wrap reveal">
+      <span class="prompt-eyebrow"><span class="prompt-user">guest@yourname</span>:~$ contact --send</span>
+      <div class="contact-panel">
+        <a href="#" class="contact-big">ayan_maiti.dev</a>
+        <div>&gt; github&nbsp;&nbsp;&nbsp;<a href="https://github.com/AyMi-2025" target="_blank">github.com/AyMi-2025</a></div>
+        <div>&gt; linkedin&nbsp;<a href="https://www.linkedin.com/in/ayan-maiti-am05052008/" target="_blank">linkedin.com/in/yourname</a></div>
+        <div>&gt; instagram&nbsp;&nbsp;<a href="https://www.instagram.com/itz_ayan558" target="_blank">instagram.com/itz_ayan558</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Built with HTML, CSS, JS, and mild chaos. © 2026 Your Name — psst, try the terminal icon ↘
+</footer>
+
+<button id="terminal-toggle" class="terminal-fab" aria-label="Open terminal">&gt;_</button>
+<div id="terminal-overlay" class="terminal-overlay hidden">
+  <div class="terminal-window">
+    <div class="terminal-titlebar">
+      <div class="traffic-lights">
+        <span class="dot red"></span><span class="dot amber"></span><span class="dot teal"></span>
+      </div>
+      <span class="terminal-title">guest@yourname: ~</span>
+      <button id="terminal-close" class="terminal-close" aria-label="Close terminal">×</button>
+    </div>
+    <div class="terminal-body" id="terminal-body">
+      <div class="terminal-line">Welcome! Type <span class="hl">help</span> to see what I can do.</div>
+    </div>
+    <div class="terminal-input-row">
+      <span class="prompt">guest@yourname:~$</span>
+      <input id="terminal-input" class="terminal-input" type="text" autocomplete="off" spellcheck="false" aria-label="Terminal command input" />
+    </div>
+  </div>
+</div>
+
+<script>
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Dark mode toggle ---- */
+  const themeToggle = document.getElementById('theme-toggle');
+  const rootEl = document.documentElement;
+  function applyTheme(theme){
+    rootEl.setAttribute('data-theme', theme);
+    themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+    themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  }
+  let currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  applyTheme(currentTheme);
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    applyTheme(currentTheme);
+  });
+
+  /* ---- Typed rotating roles ---- */
+  const roles = ["Frontend tinkerer.", "Backend plumber.", "Bug creator & destroyer.", "Ships weird little tools."];
+  const typedEl = document.getElementById('typed-text');
+  if (reducedMotion) {
+    typedEl.textContent = roles[0];
+  } else {
+    let ri = 0, ci = 0, deleting = false;
+    function tick(){
+      const word = roles[ri];
+      if (!deleting){
+        ci++;
+        typedEl.textContent = word.slice(0, ci);
+        if (ci === word.length){ deleting = true; setTimeout(tick, 1200); return; }
+      } else {
+        ci--;
+        typedEl.textContent = word.slice(0, ci);
+        if (ci === 0){ deleting = false; ri = (ri + 1) % roles.length; }
+      }
+      setTimeout(tick, deleting ? 35 : 55);
+    }
+    tick();
+  }
+
+  /* ---- Scroll spy: address bar + active tab ---- */
+  const sections = document.querySelectorAll('section[id]');
+  const urlPath = document.getElementById('url-path');
+  const tabs = document.querySelectorAll('.tab');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        const id = entry.target.id;
+        const tab = document.querySelector(`.tab[href="#${id}"]`);
+        if (tab){
+          urlPath.textContent = tab.dataset.path;
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+        }
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  /* ---- Reveal on scroll ---- */
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  /* ---- Project card tilt ---- */
+  if (!reducedMotion){
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5;
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transform = `perspective(600px) rotateX(${-y * 6}deg) rotateY(${x * 6}deg) translateY(-2px)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+  }
+
+  /* ---- Terminal easter egg ---- */
+  const fab = document.getElementById('terminal-toggle');
+  const overlay = document.getElementById('terminal-overlay');
+  const closeBtn = document.getElementById('terminal-close');
+  const body = document.getElementById('terminal-body');
+  const input = document.getElementById('terminal-input');
+
+  function openTerminal(){ overlay.classList.remove('hidden'); input.focus(); }
+  function closeTerminal(){ overlay.classList.add('hidden'); }
+  fab.addEventListener('click', openTerminal);
+  closeBtn.addEventListener('click', closeTerminal);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeTerminal(); });
+
+  function printLine(html){
+    const line = document.createElement('div');
+    line.className = 'terminal-line';
+    line.innerHTML = html;
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  const jokes = [
+    "Why do programmers prefer dark mode? Because light attracts bugs.",
+    "There are 10 kinds of people: those who understand binary, and those who don't.",
+    "It's not a bug, it's an undocumented feature."
+  ];
+
+  const commands = {
+    help: () => printLine("Commands: <span class='hl'>about</span>, <span class='hl'>projects</span>, <span class='hl'>skills</span>, <span class='hl'>contact</span>, <span class='hl'>whoami</span>, <span class='hl'>joke</span>, <span class='hl'>clear</span>"),
+    about: () => printLine("Full-stack developer who likes rebuilding boring things, slightly weirder."),
+    projects: () => printLine("habit-tracker.app · recipe-remix.app · latency-dash.app · notes.app"),
+    skills: () => printLine("JavaScript, TypeScript, React, Node.js, Python, PostgreSQL, Docker, AWS, GraphQL"),
+    contact: () => printLine("hello@yourname.dev — also on github.com/yourname"),
+    whoami: () => printLine("guest — nice to meet you."),
+    joke: () => printLine(jokes[Math.floor(Math.random() * jokes.length)]),
+    clear: () => { body.innerHTML = ''; },
+    "sudo hire-me": () => { printLine("Permission granted. Opening email client…"); setTimeout(() => { window.location.href = "mailto:hello@yourname.dev"; }, 700); }
+  };
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter'){
+      const raw = input.value.trim();
+      if (raw.length){
+        printLine(`<span style="color:var(--violet)">guest@yourname:~$</span> ${raw}`);
+        const cmd = commands[raw.toLowerCase()];
+        if (cmd) cmd();
+        else printLine(`command not found: ${raw} — try 'help'`);
+      }
+      input.value = '';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !overlay.classList.contains('hidden')) closeTerminal();
+  });
+</script>
+
+</body>
+</html>
+
+
