@@ -3,7 +3,7 @@
 A terminal/CLI-themed personal portfolio website showcasing my projects, 
 skills, and journey.
 
-🔗 Live: https://aymi-2025.github.io/MyProfile/
+🔗 Live: https://ayanmaitidev.vercel.app/
 
 ## Built With
 - HTML5
